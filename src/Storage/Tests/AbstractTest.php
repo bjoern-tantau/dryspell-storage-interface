@@ -50,8 +50,8 @@ abstract class AbstractTest extends TestCase
 
     public function testSetup()
     {
-        $this->getSetupStorage()->setup(TestObject::class);
         $this->getSetupStorage()->setup(TestParentObject::class);
+        $this->getSetupStorage()->setup(TestObject::class);
     }
 
     /**
