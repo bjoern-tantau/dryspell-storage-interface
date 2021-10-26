@@ -1,7 +1,7 @@
 {
     "name": "dryspell/storage-interface",
     "description": "Interface to build elegant storage classes with.",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "authors": [
         {
             "name": "Björn Tantau",
@@ -15,7 +15,7 @@
     },
     "require": {
         "php": ">=8.0",
-        "dryspell/models": "^1.1"
+        "dryspell/models": "^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
