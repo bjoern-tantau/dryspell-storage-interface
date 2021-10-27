@@ -62,7 +62,7 @@ abstract class AbstractTest extends TestCase
         $expectedId = 0;
         foreach ($objects['parents'] as $parent) {
             $expectedId++;
-            $now        = new \DateTime();
+            $now = new \DateTime();
             $this->getStorage()->save($parent);
             $this->assertEquals($expectedId, $parent->id);
             $this->assertEquals($now->getTimestamp(), $parent->created_at->getTimestamp());
@@ -73,7 +73,7 @@ abstract class AbstractTest extends TestCase
         $expectedId = 0;
         foreach ($objects['children'] as $child) {
             $expectedId++;
-            $now        = new \DateTime();
+            $now = new \DateTime();
             $this->getStorage()->save($child);
             $this->assertEquals($expectedId, $child->id);
             $this->assertEquals($now->getTimestamp(), $child->created_at->getTimestamp());
@@ -101,6 +101,9 @@ abstract class AbstractTest extends TestCase
         $this->assertEquals($now->getTimestamp(), $object->updated_at->getTimestamp());
         $this->assertNotEquals($object->created_at->getTimestamp(), $object->updated_at->getTimestamp());
 
+        foreach ($objects['children'] as $child) {
+            unset($child->parent);
+        }
         return $objects;
     }
 
@@ -357,30 +360,6 @@ abstract class AbstractTest extends TestCase
      *
      * @depends testUpdateObjects
      */
-    public function testFindWithParent(array $objects)
-    {
-        $actual = iterator_to_array(
-            $this->getStorage()
-                ->find(TestObject::class)
-                ->with('parent')
-                ->where('id')
-                ->equals(1)
-        );
-
-        $expected = [
-            $objects['children'][0],
-            $objects['children'][2],
-        ];
-
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     *
-     * @param array $objects
-     *
-     * @depends testUpdateObjects
-     */
     public function testSortAscending(array $objects)
     {
         $actual = iterator_to_array(
@@ -434,7 +413,7 @@ abstract class AbstractTest extends TestCase
         $actual = iterator_to_array(
             $this->getStorage()
                 ->find(TestObject::class)
-            ->limit(2, 1)
+                ->limit(2, 1)
         );
 
         $expected = [
@@ -443,5 +422,35 @@ abstract class AbstractTest extends TestCase
         ];
 
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     *
+     * @param array $objects
+     *
+     * @depends testUpdateObjects
+     */
+    public function testFindWithParent(array $objects)
+    {
+        $actual = iterator_to_array(
+            $this->getStorage()
+                ->find(TestObject::class)
+                ->with('parent')
+                ->where('id')
+                ->equals(1)
+        );
+
+        $objects['children'][0]->parent = $objects['parents'][0];
+        $objects['children'][2]->parent = $objects['parents'][0];
+
+        $expected = [
+            $objects['children'][0],
+            $objects['children'][2],
+        ];
+
+        $this->assertEquals($expected, $actual);
+
+        unset($objects['children'][0]->parent);
+        unset($objects['children'][2]->parent);
     }
 }
