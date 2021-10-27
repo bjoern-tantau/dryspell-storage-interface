@@ -315,7 +315,7 @@ abstract class AbstractTest extends TestCase
         $actual = iterator_to_array(
             $this->getStorage()
                 ->find(TestParentObject::class)
-                ->where('update_at')
+                ->where('updated_at')
                 ->isLowerThanOrEquals(new \DateTime())
         );
 
