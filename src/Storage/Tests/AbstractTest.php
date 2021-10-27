@@ -19,29 +19,24 @@ abstract class AbstractTest extends TestCase
 
     protected function getTestObjects(): array
     {
-        // Backend is needed for now. Should be removed with next update of dryspell/models
-
-        $backend = $this->getMockBuilder(\Dryspell\Models\BackendInterface::class)
-            ->getMock();
-
         $objects = [];
 
-        $objects['parents'][0]           = new TestParentObject($backend);
+        $objects['parents'][0]           = new TestParentObject();
         $objects['parents'][0]->name     = 'First Parent';
         $objects['parents'][0]->nullable = 'Not Null';
 
-        $objects['parents'][1]       = new TestParentObject($backend);
+        $objects['parents'][1]       = new TestParentObject();
         $objects['parents'][1]->name = 'Second Parent';
 
-        $objects['children'][0]         = new TestObject($backend);
+        $objects['children'][0]         = new TestObject();
         $objects['children'][0]->name   = 'First Child';
         $objects['children'][0]->parent = $objects['parents'][0];
 
-        $objects['children'][1]         = new TestObject($backend);
+        $objects['children'][1]         = new TestObject();
         $objects['children'][1]->name   = 'Second Child';
         $objects['children'][1]->parent = $objects['parents'][1];
 
-        $objects['children'][2]         = new TestObject($backend);
+        $objects['children'][2]         = new TestObject();
         $objects['children'][2]->name   = 'Third Child';
         $objects['children'][2]->parent = $objects['parents'][0];
 
@@ -70,8 +65,8 @@ abstract class AbstractTest extends TestCase
             $now        = new \DateTime();
             $this->getStorage()->save($parent);
             $this->assertEquals($expectedId, $parent->id);
-            $this->assertEquals($now, $parent->created_at);
-            $this->assertEquals($now, $parent->updated_at);
+            $this->assertEquals($now->getTimestamp(), $parent->created_at->getTimestamp());
+            $this->assertEquals($now->getTimestamp(), $parent->updated_at->getTimestamp());
         }
 
         $this->assertCount(3, $objects['children']);
@@ -81,8 +76,8 @@ abstract class AbstractTest extends TestCase
             $now        = new \DateTime();
             $this->getStorage()->save($child);
             $this->assertEquals($expectedId, $child->id);
-            $this->assertEquals($now, $child->created_at);
-            $this->assertEquals($now, $child->updated_at);
+            $this->assertEquals($now->getTimestamp(), $child->created_at->getTimestamp());
+            $this->assertEquals($now->getTimestamp(), $child->updated_at->getTimestamp());
         }
 
         return $objects;
@@ -103,8 +98,8 @@ abstract class AbstractTest extends TestCase
         sleep(1); // Sleep one second so that updated_at has to change
         $now = new \DateTime();
         $this->getStorage()->save($object);
-        $this->assertEquals($now, $object->updated_at);
-        $this->assertNotEquals($object->created_at, $object->updated_at);
+        $this->assertEquals($now->getTimestamp(), $object->updated_at->getTimestamp());
+        $this->assertNotEquals($object->created_at->getTimestamp(), $object->updated_at->getTimestamp());
 
         return $objects;
     }
