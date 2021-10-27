@@ -61,7 +61,7 @@ abstract class AbstractTest extends TestCase
         $this->assertCount(2, $objects['parents']);
         $expectedId = 0;
         foreach ($objects['parents'] as $parent) {
-            $expectedId = 1;
+            $expectedId++;
             $now        = new \DateTime();
             $this->getStorage()->save($parent);
             $this->assertEquals($expectedId, $parent->id);
@@ -72,7 +72,7 @@ abstract class AbstractTest extends TestCase
         $this->assertCount(3, $objects['children']);
         $expectedId = 0;
         foreach ($objects['children'] as $child) {
-            $expectedId = 1;
+            $expectedId++;
             $now        = new \DateTime();
             $this->getStorage()->save($child);
             $this->assertEquals($expectedId, $child->id);
