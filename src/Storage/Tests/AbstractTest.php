@@ -157,7 +157,7 @@ abstract class AbstractTest extends TestCase
      *
      * @depends testUpdateObjects
      */
-    public function testFindEquals(array $objects)
+    public function testFindEquals(array $objects): \Dryspell\Models\ObjectInterface
     {
         $actual = iterator_to_array(
             $this->getStorage()
@@ -171,6 +171,8 @@ abstract class AbstractTest extends TestCase
         ];
 
         $this->assertEquals($expected, $actual);
+
+        return $actual[0];
     }
 
     /**
@@ -452,5 +454,29 @@ abstract class AbstractTest extends TestCase
 
         unset($objects['children'][0]->parent);
         unset($objects['children'][2]->parent);
+    }
+
+    /**
+     *
+     * @param array $objects
+     *
+     * @depends testFindEquals
+     */
+    public function testDelete(\Dryspell\Models\ObjectInterface $object)
+    {
+        $deletedId    = $object->id;
+        $deletedClass = get_class($object);
+        $this->getStorage()->delete($object);
+
+        $actual = iterator_to_array(
+            $this->getStorage()
+                ->find($deletedClass)
+                ->where('id')
+                ->equals($deletedId)
+        );
+
+        $expected = [];
+
+        $this->assertEquals($expected, $actual);
     }
 }
