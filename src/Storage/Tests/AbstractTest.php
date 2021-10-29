@@ -161,13 +161,13 @@ abstract class AbstractTest extends TestCase
     {
         $actual = iterator_to_array(
             $this->getStorage()
-                ->find(TestParentObject::class)
+                ->find(TestObject::class)
                 ->where('id')
                 ->equals(1)
         );
 
         $expected = [
-            $objects['parents'][0],
+            $objects['children'][0],
         ];
 
         $this->assertEquals($expected, $actual);

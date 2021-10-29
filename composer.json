@@ -1,7 +1,7 @@
 {
     "name": "dryspell/storage-interface",
     "description": "Interface to build elegant storage classes with.",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "authors": [
         {
             "name": "Björn Tantau",
