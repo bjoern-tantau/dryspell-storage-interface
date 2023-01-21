@@ -23,10 +23,12 @@ abstract class AbstractTest extends TestCase
 
         $objects['parents'][0]           = new TestParentObject();
         $objects['parents'][0]->name     = 'First Parent';
+        $objects['parents'][0]->testDate = new \DateTime('2022-01-01');
         $objects['parents'][0]->nullable = 'Not Null';
 
-        $objects['parents'][1]       = new TestParentObject();
-        $objects['parents'][1]->name = 'Second Parent';
+        $objects['parents'][1]           = new TestParentObject();
+        $objects['parents'][1]->testDate = new \DateTime('2022-01-01');
+        $objects['parents'][1]->name     = 'Second Parent';
 
         $objects['children'][0]         = new TestObject();
         $objects['children'][0]->name   = 'First Child';

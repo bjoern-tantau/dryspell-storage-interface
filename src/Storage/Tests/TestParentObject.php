@@ -12,6 +12,7 @@ class TestParentObject extends BaseObject
 {
 
     public string $name;
+    public \DateTime $testDate;
     public ?string $nullable;
 
 }
